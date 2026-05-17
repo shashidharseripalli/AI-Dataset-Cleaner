@@ -1,3 +1,0 @@
-"""
-File handling service.
-"""

@@ -1,3 +1,0 @@
-"""
-Dependency injection for authentication.
-"""

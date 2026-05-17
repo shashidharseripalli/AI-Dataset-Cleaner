@@ -1,3 +1,0 @@
-"""
-Helper utility functions.
-"""
