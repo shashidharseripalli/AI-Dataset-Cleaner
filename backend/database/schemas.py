@@ -58,6 +58,14 @@ class Dataset(BaseModel):
             orm_mode = True
 
 
+class FileUploadResponse(BaseModel):
+    filename: str
+    content_type: Optional[str] = None
+    size_bytes: int
+    saved_path: str
+    owner_id: int
+
+
 class User(UserBase):
     id: int
     datasets: List[Dataset] = []
