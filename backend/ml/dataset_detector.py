@@ -1,0 +1,3 @@
+"""
+Dataset type detection module.
+"""
