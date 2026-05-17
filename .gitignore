@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.local
+.env.*.local
+.vscode/
+.idea/
+.DS_Store
+.pytest_cache/
+coverage/
+mypy_cache/
+dev.db
+*.sqlite3
+*.db
+pip-wheel-metadata/
+__pypackages__/

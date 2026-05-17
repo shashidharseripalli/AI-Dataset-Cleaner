@@ -1,3 +1,0 @@
-"""
-LLM-based explanation generator.
-"""

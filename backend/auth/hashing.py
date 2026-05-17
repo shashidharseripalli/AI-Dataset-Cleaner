@@ -1,3 +1,0 @@
-"""
-Password hashing utilities.
-"""
