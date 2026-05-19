@@ -34,8 +34,8 @@ if "last_cleaned_file_path" not in st.session_state:
 api_base = st.sidebar.text_input("API Base URL", value=DEFAULT_API_BASE)
 st.sidebar.caption("Make sure FastAPI is running before testing.")
 
-tab_auth, tab_users, tab_dataset, tab_upload, tab_analysis, tab_cleaning = st.tabs(
-    ["Auth", "Users", "Datasets", "Upload", "Analysis", "Cleaning"]
+tab_auth, tab_users, tab_dataset, tab_upload, tab_analysis, tab_cleaning, tab_ml = st.tabs(
+    ["Auth", "Users", "Datasets", "Upload", "Analysis", "Cleaning", "ML Reco"]
 )
 
 with tab_auth:
@@ -222,6 +222,31 @@ with tab_cleaning:
             st.dataframe(cleaned_df.head(preview_rows), use_container_width=True)
         except Exception as exc:
             st.error(f"Could not load cleaned dataset: {exc}")
+
+with tab_ml:
+    st.subheader("Algorithm Recommendation")
+    dataset_type = st.selectbox(
+        "Dataset Type",
+        ["classification", "regression", "clustering", "nlp", "unknown"],
+    )
+    feature_count = st.number_input("Feature Count", min_value=1, value=10, step=1)
+    target_column = st.text_input("Target Column (optional)", value="")
+    data_size = st.number_input("Data Size (rows)", min_value=1, value=1000, step=100)
+
+    if st.button("Recommend (/ml/recommend)"):
+        payload = {
+            "dataset_type": dataset_type,
+            "feature_count": int(feature_count),
+            "target_column": target_column or None,
+            "data_size": int(data_size),
+        }
+        resp = requests.post(
+            f"{api_base}/ml/recommend",
+            json=payload,
+            headers=auth_headers(),
+            timeout=30,
+        )
+        show_response(resp)
 
 st.divider()
 st.caption("Run with: streamlit run frontend/streamlit_app.py")

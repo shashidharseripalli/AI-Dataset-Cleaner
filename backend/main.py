@@ -10,6 +10,7 @@ from backend.routes import (
     auth_router,
     cleaning_router,
     dataset_router,
+    ml_router,
     upload_router,
     users_router,
 )
@@ -43,4 +44,5 @@ app.include_router(dataset_router)
 app.include_router(upload_router)
 app.include_router(analysis_router)
 app.include_router(cleaning_router)
+app.include_router(ml_router)
 app.include_router(auth_router)
