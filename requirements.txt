@@ -7,3 +7,5 @@ python-multipart
 pandas
 passlib[bcrypt]
 python-jose[cryptography]
+streamlit
+requests

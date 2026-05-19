@@ -13,9 +13,14 @@ class AnalysisRequest(BaseModel):
     csv_path: str
 
 
+def _normalize_csv_path(path_value: str) -> Path:
+    normalized = path_value.strip().strip("'\"")
+    return Path(normalized)
+
+
 @router.post("/run")
 async def run_analysis(payload: AnalysisRequest):
-    csv_file = Path(payload.csv_path)
+    csv_file = _normalize_csv_path(payload.csv_path)
     if not csv_file.exists():
         raise HTTPException(status_code=404, detail="CSV file not found")
     if csv_file.suffix.lower() != ".csv":

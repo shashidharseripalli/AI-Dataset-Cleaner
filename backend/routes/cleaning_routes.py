@@ -16,9 +16,14 @@ class CleaningRequest(BaseModel):
     outlier_strategy: str = "clip_iqr"
 
 
+def _normalize_csv_path(path_value: str) -> Path:
+    normalized = path_value.strip().strip("'\"")
+    return Path(normalized)
+
+
 @router.post("/run")
 async def run_cleaning(payload: CleaningRequest):
-    csv_file = Path(payload.csv_path)
+    csv_file = _normalize_csv_path(payload.csv_path)
     if not csv_file.exists():
         raise HTTPException(status_code=404, detail="CSV file not found")
     if csv_file.suffix.lower() != ".csv":
