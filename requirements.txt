@@ -5,3 +5,5 @@ psycopg2-binary
 python-dotenv
 python-multipart
 pandas
+passlib[bcrypt]
+python-jose[cryptography]

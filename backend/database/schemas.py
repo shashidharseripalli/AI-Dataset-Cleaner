@@ -29,6 +29,21 @@ class UserUpdate(BaseModel):
     username: Optional[str] = None
 
 
+class AuthSignup(BaseModel):
+    username: str
+    password: str
+
+
+class AuthLogin(BaseModel):
+    username: str
+    password: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
 class DatasetBase(BaseModel):
     name: str
     description: Optional[str] = None

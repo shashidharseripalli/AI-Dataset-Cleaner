@@ -9,6 +9,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, index=True, unique=True, nullable=False)
+    hashed_password = Column(String, nullable=True)
     datasets = relationship("Dataset", back_populates="owner", cascade="all, delete-orphan")
 
 

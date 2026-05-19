@@ -1,4 +1,5 @@
 from .analysis_routes import router as analysis_router
+from .auth_routes import router as auth_router
 from .cleaning_routes import router as cleaning_router
 from .dataset_routes import router as dataset_router
 from .upload_routes import router as upload_router
