@@ -30,6 +30,8 @@ if "access_token" not in st.session_state:
     st.session_state.access_token = ""
 if "last_cleaned_file_path" not in st.session_state:
     st.session_state.last_cleaned_file_path = ""
+if "current_csv_path" not in st.session_state:
+    st.session_state.current_csv_path = ""
 
 api_base = st.sidebar.text_input("API Base URL", value=DEFAULT_API_BASE)
 st.sidebar.caption("Make sure FastAPI is running before testing.")
@@ -150,13 +152,20 @@ with tab_upload:
                 timeout=60,
             )
             show_response(resp)
+            if resp.ok:
+                saved_path = resp.json().get("saved_path", "")
+                st.session_state.current_csv_path = saved_path
+                st.session_state.analysis_csv_path = saved_path
+                st.session_state.cleaning_csv_path = saved_path
+                st.session_state.ml_csv_path = saved_path
 
 with tab_analysis:
     st.subheader("Run Analysis")
     analysis_csv_path = st.text_input(
         "CSV Path",
-        value=str(Path("uploads/raw/sample.csv")),
+        value=st.session_state.current_csv_path or str(Path("uploads/raw/sample.csv")),
         help="Use the saved_path returned from upload API.",
+        key="analysis_csv_path",
     )
     if st.button("Analyze (/analysis/run)"):
         resp = requests.post(
@@ -171,7 +180,8 @@ with tab_cleaning:
     st.subheader("Run Cleaning")
     cleaning_csv_path = st.text_input(
         "Cleaning CSV Path",
-        value=str(Path("uploads/raw/sample.csv")),
+        value=st.session_state.current_csv_path or str(Path("uploads/raw/sample.csv")),
+        key="cleaning_csv_path",
     )
     selected_ops = st.multiselect(
         "Operations",
@@ -228,8 +238,9 @@ with tab_ml:
     use_csv_detection = st.checkbox("Auto-detect from CSV path", value=True)
     reco_csv_path = st.text_input(
         "CSV Path for Detection",
-        value="",
+        value=st.session_state.current_csv_path,
         help="If provided, backend detects dataset type, feature count, and data size automatically.",
+        key="ml_csv_path",
     )
     dataset_type = st.selectbox(
         "Dataset Type (manual)",
