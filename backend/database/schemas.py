@@ -59,6 +59,7 @@ class Dataset(BaseModel):
 
 
 class FileUploadResponse(BaseModel):
+    dataset_id: int
     filename: str
     content_type: Optional[str] = None
     size_bytes: int
