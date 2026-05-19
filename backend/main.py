@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from starlette.concurrency import run_in_threadpool
 
 from backend.database import db, models
-from backend.routes import dataset_router, upload_router, users_router
+from backend.routes import analysis_router, dataset_router, upload_router, users_router
 
 app = FastAPI(title="AI Dataset Cleaner API")
 
@@ -20,3 +20,4 @@ async def on_startup():
 app.include_router(users_router)
 app.include_router(dataset_router)
 app.include_router(upload_router)
+app.include_router(analysis_router)
