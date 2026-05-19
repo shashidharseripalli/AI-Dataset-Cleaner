@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
 *.pyc
+.Python
 .env
 .env.local
 .env.*.local
@@ -15,3 +16,30 @@ dev.db
 *.db
 pip-wheel-metadata/
 __pypackages__/
+
+# Build / tooling caches
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Local data artifacts
+uploads/raw/
+uploads/temp/
+cleaned/processed_files/
+reports/analysis_reports/
+reports/model_reports/
+
+# Keep folder structure (optional)
+!uploads/raw/.gitkeep
+!uploads/temp/.gitkeep
+!cleaned/processed_files/.gitkeep
+!reports/analysis_reports/.gitkeep
+!reports/model_reports/.gitkeep

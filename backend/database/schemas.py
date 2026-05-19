@@ -29,6 +29,21 @@ class UserUpdate(BaseModel):
     username: Optional[str] = None
 
 
+class AuthSignup(BaseModel):
+    username: str
+    password: str
+
+
+class AuthLogin(BaseModel):
+    username: str
+    password: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
 class DatasetBase(BaseModel):
     name: str
     description: Optional[str] = None
@@ -56,6 +71,15 @@ class Dataset(BaseModel):
     else:
         class Config:
             orm_mode = True
+
+
+class FileUploadResponse(BaseModel):
+    dataset_id: int
+    filename: str
+    content_type: Optional[str] = None
+    size_bytes: int
+    saved_path: str
+    owner_id: int
 
 
 class User(UserBase):
