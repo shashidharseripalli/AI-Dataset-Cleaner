@@ -1,3 +1,4 @@
+from .ai_routes import router as ai_router
 from .analysis_routes import router as analysis_router
 from .auth_routes import router as auth_router
 from .cleaning_routes import router as cleaning_router

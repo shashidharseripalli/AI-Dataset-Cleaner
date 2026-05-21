@@ -17,7 +17,7 @@ csv_path = st.text_input(
 )
 
 # layout columns for action buttons
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("Run Analysis"):
@@ -25,11 +25,16 @@ with col1:
 
 with col2:
     if st.button("Generate Visualizations"):
-        viz = post_json("/analysis/visualize", {"csv_path": csv_path}, timeout=120)
-        show_response(viz)
+        viz_resp = post_json("/analysis/visualize", {"csv_path": csv_path}, timeout=120)
+        show_response(viz_resp)
+
+        if viz_resp.status_code == 200:
+            viz = viz_resp.json()
+        else:
+            viz = {}
 
         if isinstance(viz, dict) and "charts" in viz:
-            charts = viz["charts"]
+            charts = viz.get("charts", {})
 
             st.subheader("Histograms")
             for item in charts.get("histograms", []):
@@ -62,3 +67,25 @@ with col2:
             cm = charts.get("correlation_matrix", {})
             if cm.get("matrix"):
                 st.dataframe(cm["matrix"], use_container_width=True)
+
+with col3:
+    if st.button("AI Explain (Gemini)"):
+        ai_resp = post_json("/ai/explain", {"csv_path": csv_path}, timeout=120)
+        show_response(ai_resp)
+
+        if ai_resp.status_code != 200:
+            st.stop()
+
+        payload = ai_resp.json()
+        ai = payload.get("ai_explanation", {})
+
+        st.subheader("Cleaning Reasoning")
+        for item in ai.get("cleaning_reasoning", []):
+            st.write(f"- {item}")
+
+        st.subheader("Model Recommendation Reasoning")
+        st.json(ai.get("model_recommendation_reasoning", {}))
+
+        st.subheader("Dataset Insights")
+        for item in ai.get("dataset_insights", []):
+            st.write(f"- {item}")
