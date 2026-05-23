@@ -1,9 +1,11 @@
 from pathlib import Path
 
 import pandas as pd
+import requests
 import streamlit as st
 
 from utils.api_client import post_json, show_response
+from utils.session import auth_headers
 from utils.session import init_session_state
 
 st.set_page_config(page_title="Cleaning", layout="wide")
@@ -65,3 +67,24 @@ if st.button("Load Cleaned Dataset"):
         st.dataframe(cleaned_df.head(preview_rows), use_container_width=True)
     except Exception as exc:
         st.error(f"Could not load cleaned dataset: {exc}")
+
+if st.button("Prepare Download"):
+    try:
+        api_base = st.session_state.get("api_base", "http://127.0.0.1:8000")
+        response = requests.get(
+            f"{api_base}/download/cleaned",
+            params={"file_path": preview_path},
+            headers=auth_headers(),
+            timeout=60,
+        )
+        if response.status_code != 200:
+            st.error(f"Download failed: {response.text}")
+        else:
+            st.download_button(
+                "Download Cleaned Dataset",
+                data=response.content,
+                file_name=Path(preview_path).name or "cleaned_dataset.csv",
+                mime="text/csv",
+            )
+    except Exception as exc:
+        st.error(f"Could not prepare download: {exc}")
