@@ -6,10 +6,12 @@ from starlette.concurrency import run_in_threadpool
 
 from backend.database import db, models
 from backend.routes import (
+    ai_router,
     analysis_router,
     auth_router,
     cleaning_router,
     dataset_router,
+    download_router,
     ml_router,
     upload_router,
     users_router,
@@ -40,9 +42,11 @@ async def on_startup():
 
 
 app.include_router(users_router)
-app.include_router(dataset_router)
 app.include_router(upload_router)
+app.include_router(dataset_router)
+app.include_router(ai_router)
 app.include_router(analysis_router)
 app.include_router(cleaning_router)
+app.include_router(download_router)
 app.include_router(ml_router)
 app.include_router(auth_router)

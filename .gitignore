@@ -1,10 +1,16 @@
 .venv/
+venv/
+env/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 .Python
 .env
+.env.*
 .env.local
 .env.*.local
+.envrc
 .vscode/
 .idea/
 .DS_Store
@@ -23,12 +29,18 @@ __pypackages__/
 .coverage
 htmlcov/
 *.egg-info/
+dist/
+build/
 
 # Jupyter
 .ipynb_checkpoints/
 
 # Streamlit
 .streamlit/secrets.toml
+.streamlit/.cache/
+
+# Logs
+*.log
 
 # Local data artifacts
 uploads/raw/
