@@ -42,8 +42,8 @@ async def on_startup():
 
 
 app.include_router(users_router)
-app.include_router(dataset_router)
 app.include_router(upload_router)
+app.include_router(dataset_router)
 app.include_router(ai_router)
 app.include_router(analysis_router)
 app.include_router(cleaning_router)

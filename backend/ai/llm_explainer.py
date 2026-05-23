@@ -35,14 +35,17 @@ def call_gemini(prompt: str) -> Dict[str, Any]:
         "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1200},
     }
 
-    response = requests.post(
-        _gemini_endpoint(model, api_key),
-        json=payload,
-        timeout=60,
-    )
+    try:
+        response = requests.post(
+            _gemini_endpoint(model, api_key),
+            json=payload,
+            timeout=60,
+        )
+    except requests.RequestException as exc:
+        raise LLMExplainerError("Could not reach Gemini API") from exc
 
     if response.status_code >= 400:
-        raise LLMExplainerError(f"Gemini API error {response.status_code}: {response.text}")
+        raise LLMExplainerError(f"Gemini API returned status {response.status_code}")
 
     raw_text = _extract_text(response.json()).strip()
 

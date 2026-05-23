@@ -6,10 +6,11 @@ import streamlit as st
 
 from utils.api_client import post_json, show_response
 from utils.session import auth_headers
-from utils.session import init_session_state
+from utils.session import init_session_state, require_login
 
 st.set_page_config(page_title="Cleaning", layout="wide")
 init_session_state()
+require_login()
 
 st.title("Cleaning")
 

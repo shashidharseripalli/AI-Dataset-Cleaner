@@ -1,14 +1,16 @@
 import streamlit as st
 
 from utils.api_client import post_multipart, show_response
-from utils.session import init_session_state
+from utils.session import init_session_state, require_login
 
 st.set_page_config(page_title="Upload", layout="wide")
 init_session_state()
+require_login()
 
 st.title("Upload")
 
-owner_id = st.number_input("Owner ID", min_value=1, value=1, step=1)
+default_owner_id = int(st.session_state.current_user_id or 1)
+owner_id = st.number_input("Owner ID", min_value=1, value=default_owner_id, step=1)
 dataset_name = st.text_input("Optional Dataset Name")
 description = st.text_input("Optional Description")
 uploaded_file = st.file_uploader("Select CSV file", type=["csv"])

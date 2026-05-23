@@ -1,15 +1,22 @@
 import streamlit as st
 
 from utils.api_client import get, post_json, show_response
-from utils.session import init_session_state
+from utils.session import init_session_state, logout, require_login
 
 st.set_page_config(page_title="Dashboard", layout="wide")
 init_session_state()
+require_login()
 
 st.title("Dashboard")
 
 st.subheader("Auth Status")
 st.code(st.session_state.access_token or "No token")
+if st.button("Logout"):
+    logout()
+    if hasattr(st, "switch_page"):
+        st.switch_page("pages/login.py")
+    st.rerun()
+
 if st.button("Check /auth/me"):
     show_response(get("/auth/me"))
 
